@@ -8,12 +8,12 @@
   r_version = match[1] unless match[1].nil?
   r_version = match[2] unless match[2].nil?
 
-  module_dir = context.cluster == 'owens' ? '/usr' : '/apps'
+  # module_dir = context.cluster == 'owens' ? '/usr' : '/apps'
 %>
 
 # Load the required environment
 setup_env () {
-  module purge
+  # module purge
 
   # The rserver container module should set these environment variables:
 
@@ -24,11 +24,11 @@ setup_env () {
   # SINGULARITY_BINDPATH is being used to bind all RStudio's requirements from
   # the host into the guest, and so those values may vary between sites.
 
-  module load xalt/latest ondemand
+  # module load xalt/latest ondemand
   <%- if context.cluster !~ /kubernetes/ -%>
-  module load rstudio_launcher/centos7
+  # module load rstudio_launcher/centos7
   <%- end -%>
-  module load <%= context.version %>
+  # module load <%= context.version %>
 
   <%- if context.include_tutorials == "1" %>
   export R_LIBS_USER="<%= tutorial_dir %>/Rworkshop"
@@ -99,9 +99,9 @@ sed 's/^ \{2\}//' > "$WORKING_DIR/rsession.sh" << EOL
   export R_LIBS_SITE="${R_LIBS_SITE}"
   export TZ="US/Eastern"
   export HOME="$SINGULARITY_HOME"
-  export MODULEPATH_ROOT="$MODULEPATH_ROOT"
-  export MODULEPATH="$MODULEPATH"
-  export LMOD_PKG="$LMOD_PKG"
+  # export MODULEPATH_ROOT="$MODULEPATH_ROOT"
+  # export MODULEPATH="$MODULEPATH"
+  # export LMOD_PKG="$LMOD_PKG"
 
   env
 
@@ -116,7 +116,7 @@ chmod 700 "$WORKING_DIR/rsession.sh"
 cd "${SINGULARITY_HOME}"
 
 # Output debug info
-module list
+# module list
 hostname
 
 # rstudio runtime stuff
@@ -146,7 +146,6 @@ SINGULARITYENV_LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
  -B /etc/profile \
  -B /etc/profile.d \
  -B /etc/alternatives \
- -B <%= module_dir %> \
  "$RSTUDIO_SERVER_IMAGE" \
  --www-port "${port}" \
  --auth-none 0 \
